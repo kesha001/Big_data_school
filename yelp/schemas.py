@@ -16,8 +16,8 @@ BUSINESS_SCHEMA = t.StructType([
     t.StructField("stars", t.FloatType(), True),
     t.StructField("review_count", t.IntegerType(), True),
     t.StructField("is_open", t.IntegerType(), True),
-    # t.StructField("attributes", t.StructType(), True), Modify it specifying every field in strunt tyep
-    t.StructField("categories", t.ArrayType(elementType=t.StringType()), True),
+    t.StructField("attributes", t.StringType(), True),
+    t.StructField("categories", t.StringType(), True),
     t.StructField("hours", t.MapType(keyType=t.StringType(), valueType=t.StringType()), True),
 ])
 REVIEW_SCHEMA = t.StructType([
@@ -36,12 +36,12 @@ USER_SCHEMA = t.StructType([
     t.StructField("name", t.StringType(), True),
     t.StructField("review_count", t.IntegerType(), True),
     t.StructField("yelping_since", t.DateType(), True),
-    t.StructField("friends", t.StringType(), True), # t.StructField("friends", t.ArrayType(elementType=t.StringType()), True),
+    t.StructField("friends", t.StringType(), True), 
     t.StructField("useful", t.IntegerType(), True),
     t.StructField("funny", t.IntegerType(), True),
     t.StructField("cool", t.IntegerType(), True),
     t.StructField("fans", t.IntegerType(), True),
-    t.StructField("friends", t.IntegerType(), True),# t.StructField("elite", t.ArrayType(elementType=t.IntegerType()), True),
+    t.StructField("elite", t.StringType(), True), 
     t.StructField("average_stars", t.FloatType(), True),
     t.StructField("compliment_hot", t.IntegerType(), True),
     t.StructField("compliment_more", t.IntegerType(), True),
