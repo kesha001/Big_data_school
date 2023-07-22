@@ -43,7 +43,7 @@ def get_numeric_columns(df: DataFrame) -> list:
     return [f.name for f in df.schema.fields if isinstance(f.dataType, t.IntegerType)]
 
 
-def get_ca_review_counts(business_df: DataFrame, state_val: str = "CA") -> DataFrame:
+def get_state_review_counts(business_df: DataFrame, state_val: str = "CA") -> DataFrame:
     """
     Returns the number of reviews for each business in the given state
     """
@@ -56,7 +56,7 @@ def get_ca_review_counts(business_df: DataFrame, state_val: str = "CA") -> DataF
     return business_review_counts
 
 
-def get_city_avg_stars(business_df: DataFrame, state_val: str = "CA") -> DataFrame:
+def get_state_avg_stars(business_df: DataFrame, state_val: str = "CA") -> DataFrame:
     """
     Returns the average number of stars for cities in the given state
     """

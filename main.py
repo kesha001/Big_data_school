@@ -35,14 +35,14 @@ def main():
 
 
     # Number of review fore each business of CA state
-    business_review_counts = utils.get_ca_review_counts(business_df=business_df, state_val="CA")
+    business_review_counts = utils.get_state_review_counts(business_df=business_df, state_val="CA")
     print("Number of review fore each business of CA state: ")
     business_review_counts.show(10, truncate=False)
     business_review_counts.write.format("csv").mode("overwrite").save("data/data_out/business_review_counts.csv")
 
 
     # Average number of number of stars for cities in CA state
-    city_avg_stars = utils.get_city_avg_stars(business_df=business_df, state_val="CA")
+    city_avg_stars = utils.get_state_avg_stars(business_df=business_df, state_val="CA")
     print("Average number of number of stars for cities in CA state: ")
     city_avg_stars.show(10)
     city_avg_stars.write.format("csv").mode("overwrite").save("data/data_out/city_avg_stars.csv")
