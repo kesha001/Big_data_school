@@ -18,7 +18,7 @@ BUSINESS_SCHEMA = t.StructType([
     t.StructField("is_open", t.IntegerType(), True),
     t.StructField("attributes", t.StringType(), True),
     t.StructField("categories", t.StringType(), True),
-    t.StructField("hours", t.MapType(keyType=t.StringType(), valueType=t.StringType()), True),
+    t.StructField("hours", t.StringType(), True),
 ])
 REVIEW_SCHEMA = t.StructType([
     t.StructField("review_id", t.StringType(), True),

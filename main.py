@@ -6,6 +6,7 @@ import os
 from yelp.schemas import USER_SCHEMA, CHECKIN_SCHEMA, BUSINESS_SCHEMA, REVIEW_SCHEMA, TIP_SCHEMA
 from yelp.column_variables import *
 from utils import utils
+from pyspark.sql.window import Window
 
 yelp_checkin_path = "data/yelp_academic_dataset_checkin.json"
 yelp_business_path = "data/yelp_academic_dataset_business.json"
@@ -33,6 +34,12 @@ def main():
     review_df = utils.read_spark_df(yelp_review_path, spark_session, schema=REVIEW_SCHEMA)
 
 
+    # Remove duplicates in case there are any
+    business_df = business_df.dropDuplicates()
+    user_df = user_df.dropDuplicates()
+    tip_df = tip_df.dropDuplicates()
+    # checkin_df = business_df.dropDuplicates()
+    review_df = review_df.dropDuplicates()
 
     # Number of review fore each business of CA state
     business_review_counts = utils.get_state_review_counts(business_df=business_df, state_val="CA")
