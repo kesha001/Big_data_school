@@ -192,6 +192,7 @@ def test_join_business_rating_over_time_users(spark_session):
     assert result.collect()[0]["user_average_stars"] == 3.5
 
 
+
 def test_get_business_rating_reviews_stats(spark_session):
     # Create a dummy business_rating_over_time_users DataFrame
     data = [("2016-03-09","zdSx_SD6obEhz9VrW9uAWA","Ha3iJu77CxlrFm-vQRs_8g","tnhfDv5Il8EaGSXZGiuQGg",
@@ -207,7 +208,6 @@ def test_get_business_rating_reviews_stats(spark_session):
     result = get_business_rating_reviews_stats(business_rating_over_time_users)
     assert result.count() == 2
     assert result.collect()[0]["avg_user_business_stars"] == 4.0
-
 
 def test_convert_ratings_to_binary(spark_session):
     # Create a dummy business DataFrame
@@ -295,11 +295,11 @@ def test_join_tip_user_business(spark_session):
 
 def test_get_users_tips_by_business(spark_session):
     # Create a dummy tip_user_business DataFrame
-    data = [("zdSx_SD6obEhz9VrW9uAWA","Ha3iJu77CxlrFm-vQRs_8g","tnhfDv5Il8EaGSXZGiuQGg",
+    data = [("2016-03-09","zdSx_SD6obEhz9VrW9uAWA","Ha3iJu77CxlrFm-vQRs_8g","tnhfDv5Il8EaGSXZGiuQGg",
              1,"Dummy User 1",100,"2016-03-09",3.5,3.5),
-            ("zdSx_SD6obEhz9VrW9uAWB","Ha3iJu77CxlrFm-vQRs_8h","tnhfDv5Il8EaGSXZGiuQGh",
+            ("2016-03-10","zdSx_SD6obEhz9VrW9uAWB","Ha3iJu77CxlrFm-vQRs_8h","tnhfDv5Il8EaGSXZGiuQGh",
              2,"Dummy User 2",200,"2016-03-10",4.0,4.0)]
-    schema = ["tip_id","user_id","business_id","compliment_count","name","review_count",
+    schema = ["date","tip_id","user_id","business_id","compliment_count","name","review_count",
               "yelping_since","average_stars","business_stars"]
     tip_user_business = spark_session.createDataFrame(data, schema)
 
