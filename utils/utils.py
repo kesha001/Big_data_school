@@ -3,6 +3,7 @@ import pyspark.sql.functions as f
 from pyspark.sql.types import StructType
 from pyspark.sql import SparkSession
 from pyspark.sql import DataFrame
+from pyspark.sql.window import Window
 from yelp.column_variables import *
 
 
@@ -124,13 +125,13 @@ def get_business_rating_reviews_stats(business_rating_over_time_users: DataFrame
     """
     Returns the average user rating for separate businesses and number of reviews.
     """
+    window = Window.orderBy("date").partitionBy(user_id, business_id)
+    
     business_rating_reviews_stats = business_rating_over_time_users \
-            .groupBy(user_id, business_id) \
-            .agg(f.avg(stars).alias("avg_user_business_stars"), 
-                 f.count(review_id).alias("num_user_business_reviews"),\
-                 f.first("user_average_stars").alias("user_average_stars"), 
-                 f.first("business_stars").alias("business_stars")) \
-            .orderBy("num_user_business_reviews", ascending=False)
+            .filter((f.col(stars).isNotNull()) & (f.col(review_id).isNotNull())) \
+            .withColumn("avg_user_business_stars", f.avg(f.col(stars)).over(window)) \
+            .withColumn("num_user_business_reviews", f.count(f.col(review_id)).over(window)) \
+                                .orderBy("num_user_business_reviews", ascending=False)
     
     return business_rating_reviews_stats
 
@@ -184,12 +185,10 @@ def get_users_tips_by_business(tip_user_business: DataFrame) -> DataFrame:
     """
     Returns the number of tips each user left for each of businesses.
     """
+    window = Window.orderBy("date").partitionBy(user_id, business_id)
+
     users_tips_by_business = tip_user_business \
-        .groupBy(user_id, business_id) \
-        .agg(f.sum(compliment_count).alias("user_business_total_compliments"),
-             f.first(review_count).alias("review_count"),
-             f.first(yelping_since).alias("yelping_since"),
-             f.first(average_stars).alias("average_stars"),
-             f.first("business_stars").alias("business_stars")) \
-        .orderBy("user_business_total_compliments", ascending=False)
+        .filter(f.col(compliment_count).isNotNull()) \
+        .withColumn("user_business_total_compliments", f.sum(f.col(compliment_count)).over(window)) \
+                .orderBy("user_business_total_compliments", ascending=False)
     return users_tips_by_business
